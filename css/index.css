@@ -1,0 +1,67 @@
+
+:root{
+    --color-transparent :rgba(255, 255, 255, 0);
+}
+*{
+    margin:0;
+    padding:0;
+}
+html{
+    background-color: rgb(22, 56, 59);
+
+}
+.board{
+
+    margin-left:30vw;
+    margin-top:30px;
+
+    position: relative;
+    box-sizing: border-box;
+}
+
+.board img{
+    width: 504px;
+    height: 504px;
+}
+.peices{
+    position: absolute;
+    top:0;
+    left:0;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 504px;
+}
+
+.peice img{
+    width: 59px;
+    height: 59px;
+    cursor: pointer;
+}
+.peice{
+    border:2px solid rgba(244, 51, 51, 0);
+    width:59px;
+    height: 59px;
+    cursor: pointer;
+}
+@media only screen and (max-width:500px)
+{
+    .board{
+        margin-left: 10px;
+    }
+    .board img{
+        width: 350px;
+        height: 350px;
+    }
+    .peice img{
+        width: 39.7px;
+        height: 39.7px;
+    }
+    .peice{
+        width: 39.7px;
+        height: 39.7px;
+    }
+    .peices{
+         max-width: 350px;
+    }
+
+}
