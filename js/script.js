@@ -484,22 +484,17 @@ function controlPeiceMovement(peiceType, square) {
         setPeices();
         resetHighlightSquares();
         clickedPeice = false;
-
+        turn = turn == 1 ? 0 : 1;
     } else {
 
-        if (square == peice2dArray[row][col]) {
-            resetHighlightSquares();
-            turn = turn == 1 ? 0 : 1;
-            clickedPeice = false;
-        } else {
-            if (turn == 0 && clicked.slice(0, 5) == "black")
-                showPeiceMovement(peiceType, square);
-            else if (turn == 1 && clicked.slice(0, 5) == "white")
-                showPeiceMovement(peiceType, square);
+        resetHighlightSquares();
+        clickedPeice = false;
 
-
-            clickedPeice = true;
-        }
+        if (turn == 1 && clicked.slice(0, 5) == "black")
+            showPeiceMovement(peiceType, square);
+        else if (turn == 0 && clicked.slice(0, 5) == "white")
+            showPeiceMovement(peiceType, square);
+        clickedPeice = true;
         if (firstMove == true) {
             firstMove = false;
         }
@@ -546,11 +541,9 @@ peiceArray.forEach(p => {
             if (turn == 0 && clicked.slice(0, 5) == "white") {
                 showPeiceMovement(clicked, square);
                 clickedPeice = true;
-                turn = 1;
             } else if (turn == 1 && clicked.slice(0, 5) == "black") {
                 showPeiceMovement(clicked, square);
                 clickedPeice = true;
-                turn = 0;
             }
 
 
