@@ -6,12 +6,11 @@ let clicked;
 let controlDoubleClickMovement = 0;
 let controlDifferentSquareMovement = 0;
 let squaresAllowedToMove = [];
-let squareClicked;
 let clickedPeice = false;
 let firstMove = false;
 let row = 0,
     col = 0;
-
+let turn = 0;
 let positions = [
     ['br', 'bk', 'bb', 'bq', 'bK', 'bb', 'bk', 'br'],
     ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
@@ -490,9 +489,14 @@ function controlPeiceMovement(peiceType, square) {
 
         if (square == peice2dArray[row][col]) {
             resetHighlightSquares();
+            turn = turn == 1 ? 0 : 1;
             clickedPeice = false;
         } else {
-            showPeiceMovement(peiceType, square);
+            if (turn == 0 && clicked.slice(0, 5) == "black")
+                showPeiceMovement(peiceType, square);
+            else if (turn == 1 && clicked.slice(0, 5) == "white")
+                showPeiceMovement(peiceType, square);
+
 
             clickedPeice = true;
         }
@@ -539,9 +543,17 @@ peiceArray.forEach(p => {
             controlPeiceMovement(clicked, square);
             console.log(peice2dArray);
         } else {
-            squareClicked = square;
-            showPeiceMovement(clicked, square);
-            clickedPeice = true;
+            if (turn == 0 && clicked.slice(0, 5) == "white") {
+                showPeiceMovement(clicked, square);
+                clickedPeice = true;
+                turn = 1;
+            } else if (turn == 1 && clicked.slice(0, 5) == "black") {
+                showPeiceMovement(clicked, square);
+                clickedPeice = true;
+                turn = 0;
+            }
+
+
         }
         if (clickedPeice == true && clicked == "empty-square") {
             clickedPeice = false;
