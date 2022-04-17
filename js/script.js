@@ -5,10 +5,10 @@ let peice = document.querySelectorAll(".peice");
 let clicked;
 let controlDoubleClickMovement = 0;
 let controlDifferentSquareMovement = 0;
-let squareTOMove = [];
+let squaresAllowedToMove = [];
 let squareClicked;
 let clickedPeice = false;
-
+let firstMove = false;
 let row = 0,
     col = 0;
 
@@ -40,7 +40,7 @@ for (let i = 0, k = 0; i < 8; ++i) {
     }
 }
 
-function resetBorders() {
+function resetHighlightSquares() {
     peiceArray.forEach(p => {
         p.style.backgroundColor = "";
     })
@@ -49,12 +49,17 @@ function resetBorders() {
 function setPeicesClassControl() {
     for (let i = 0; i < 8; ++i) {
         for (let j = 0; j < 8; ++j) {
-            peice2dArray[i][j].classList = '';
+            let bool = false;
+            if (peice2dArray[i][j].classList.contains('secondMove'))
+                bool = true;
+            peice2dArray[i][j].classList.value = '';
+
             peice2dArray[i][j].classList.add("peice");
+            if (bool === true) {
+                peice2dArray[i][j].classList.add("secondMove");
+            }
         }
     }
-
-
     for (let i = 0; i < 8; ++i) {
         for (let j = 0; j < 8; ++j) {
             let type = "empty";
@@ -113,6 +118,7 @@ function setPeicesClassControl() {
         }
 
     }
+
 }
 
 function setPeices() {
@@ -151,15 +157,15 @@ setPeices();
 
 
 
-function helpGDMS(i, j, squaresTohighlight, type) {
+function helpGDMS(i, j, squaresAllowedToMove, type) {
 
 
     let againstType = type == "black" ? "white" : "black";
     if (peice2dArray[i][j].classList.contains("empty-square")) {
-        squaresTohighlight.push(peice2dArray[i][j])
+        squaresAllowedToMove.push(peice2dArray[i][j])
         return 0;
     } else if (peice2dArray[i][j].classList.contains(againstType)) {
-        squaresTohighlight.push(peice2dArray[i][j]);
+        squaresAllowedToMove.push(peice2dArray[i][j]);
         return 1;
     } else if (peice2dArray[i][j].classList.contains(type)) {
         return 1;
@@ -167,67 +173,67 @@ function helpGDMS(i, j, squaresTohighlight, type) {
 }
 
 
-function giveDiagnolMovementSquares(square, squaresTohighlight, row, col) {
+function giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col) {
     let type = (square.classList.contains("black")) ? "black" : "white";
 
     for (let i = row - 1, j = col + 1; i >= 0 && j <= 7; --i, ++j) {
-        if (helpGDMS(i, j, squaresTohighlight, type)) {
+        if (helpGDMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; --i, --j) {
-        if (helpGDMS(i, j, squaresTohighlight, type)) {
+        if (helpGDMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row + 1, j = col + 1; i <= 7 && j <= 7; ++i, ++j) {
-        if (helpGDMS(i, j, squaresTohighlight, type)) {
+        if (helpGDMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row + 1, j = col - 1; i <= 7 && j >= 0; ++i, --j) {
-        if (helpGDMS(i, j, squaresTohighlight, type)) {
+        if (helpGDMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
 
 }
 
-function helpGPMS(i, j, squaresTohighlight, type) {
+function helpGPMS(i, j, squaresAllowedToMove, type) {
 
 
     let againstType = type == "black" ? "white" : "black";
     if (peice2dArray[i][j].classList.contains("empty-square")) {
-        squaresTohighlight.push(peice2dArray[i][j])
+        squaresAllowedToMove.push(peice2dArray[i][j])
         return 0;
     } else if (peice2dArray[i][j].classList.contains(againstType)) {
-        squaresTohighlight.push(peice2dArray[i][j]);
+        squaresAllowedToMove.push(peice2dArray[i][j]);
         return 1;
     } else if (peice2dArray[i][j].classList.contains(type)) {
         return 1;
     }
 }
 
-function givePerpendicularMovementSquares(square, squaresTohighlight, row, col) {
+function givePerpendicularMovementSquares(square, squaresAllowedToMove, row, col) {
     let type = (square.classList.contains("black")) ? "black" : "white";
 
     for (let i = row - 1, j = col; i >= 0; --i) {
-        if (helpGPMS(i, j, squaresTohighlight, type)) {
+        if (helpGPMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row, j = col + 1; j <= 7; ++j) {
-        if (helpGPMS(i, j, squaresTohighlight, type)) {
+        if (helpGPMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row + 1, j = col; i <= 7; ++i) {
-        if (helpGPMS(i, j, squaresTohighlight, type)) {
+        if (helpGPMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
     for (let i = row, j = col - 1; j >= 0; --j) {
-        if (helpGPMS(i, j, squaresTohighlight, type)) {
+        if (helpGPMS(i, j, squaresAllowedToMove, type)) {
             break;
         }
     }
@@ -235,7 +241,7 @@ function givePerpendicularMovementSquares(square, squaresTohighlight, row, col) 
 
 }
 
-function giveLshapeMovementSquares(square, squaresTohighlight, row, col) {
+function giveLshapeMovementSquares(square, squaresAllowedToMove, row, col) {
     let type = (square.classList.contains("black")) ? "white" : "black";
 
     for (let i = 0; i < 8; ++i) {
@@ -243,13 +249,13 @@ function giveLshapeMovementSquares(square, squaresTohighlight, row, col) {
             if (i == row - 2 || i == row + 2) {
                 if (j == col - 1 || j == col + 1) {
                     if (peice2dArray[i][j].classList.contains(type) || peice2dArray[i][j].classList.contains("empty-square")) {
-                        squaresTohighlight.push(peice2dArray[i][j]);
+                        squaresAllowedToMove.push(peice2dArray[i][j]);
                     }
                 }
             } else if (i == row + 1 || i == row - 1) {
                 if (j == col - 2 || j == col + 2) {
                     if (peice2dArray[i][j].classList.contains(type) || peice2dArray[i][j].classList.contains("empty-square")) {
-                        squaresTohighlight.push(peice2dArray[i][j]);
+                        squaresAllowedToMove.push(peice2dArray[i][j]);
                     }
                 }
             }
@@ -258,7 +264,7 @@ function giveLshapeMovementSquares(square, squaresTohighlight, row, col) {
     }
 }
 
-function getKingMovement(type, squaresTohighlight, row, col) {
+function getKingMovement(type, squaresAllowedToMove, row, col) {
     type = (type.slice(0, 5) == "black") ? "white" : "black";
 
     for (let i = 0; i < 8; ++i) {
@@ -285,12 +291,14 @@ function getKingMovement(type, squaresTohighlight, row, col) {
 
             if (check)
                 if (peice2dArray[i][j].classList.contains("empty-square") || peice2dArray[i][j].classList.contains(type))
-                    squaresTohighlight.push(peice2dArray[i][j]);
+                    squaresAllowedToMove.push(peice2dArray[i][j]);
         }
     }
 }
 
 function showPeiceMovement(peiceType, square) {
+    resetHighlightSquares();
+    squaresAllowedToMove = [];
 
     for (let i = 0; i < 8; ++i) {
         for (let j = 0; j < 8; ++j) {
@@ -301,142 +309,155 @@ function showPeiceMovement(peiceType, square) {
         }
     }
     if (peiceType == "black-pawn") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            if (peice2dArray[row + 1][col].classList.contains("empty-square")) {
-                squareTOMove.push(peice2dArray[row + 1][col]);
-                squareTOMove.push(peice2dArray[row + 2][col]);
-                peice2dArray[row + 1][col].style.backgroundColor = "rgba(51, 244, 74, 0.4)";
-                peice2dArray[row + 2][col].style.backgroundColor = "rgba(51, 244, 74, 0.4)";
+        if (square.classList.contains("secondMove") === false) {
+            firstMove = true;
+
+            for (let i = row + 1, j = col; i <= row + 2 && i <= 7; ++i) {
+                if (peice2dArray[i][j].classList.contains("empty-square")) {
+                    squaresAllowedToMove.push(peice2dArray[i][j]);
+                } else
+                    break;
+            }
+
+
+        } else {
+            if (row + 1 <= 7 && peice2dArray[row + 1][col].classList.contains("empty-square")) {
+                squaresAllowedToMove.push(peice2dArray[row + 1][col]);
             }
         }
-    }
-    if (peiceType == "white-pawn") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            if (peice2dArray[row - 1][col] && peice2dArray[row - 1][col].classList.contains("empty-square")) {
-                squareTOMove.push(peice2dArray[row - 1][col]);
-                squareTOMove.push(peice2dArray[row - 2][col]);
+        if (row + 1 <= 7 && col - 1 >= 0 && peice2dArray[row + 1][col - 1].classList.contains("white")) {
+            squaresAllowedToMove.push(peice2dArray[row + 1][col - 1]);
+        }
+        if (row + 1 <= 7 && col + 1 <= 7 && peice2dArray[row + 1][col + 1].classList.contains("white")) {
+            squaresAllowedToMove.push(peice2dArray[row + 1][col + 1]);
+        }
+        squaresAllowedToMove.forEach((s) => {
+            if (s.classList.contains("white")) {
+                s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
 
-                peice2dArray[row - 1][col].style.backgroundColor = "rgba(51, 244, 74, 0.4)";
-                peice2dArray[row - 2][col].style.backgroundColor = "rgba(51, 244, 74, 0.4)";
+            } else
+                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)";
+        })
+
+    } else if (peiceType == "white-pawn") {
+        if (square.classList.contains("secondMove") === false) {
+            firstMove = true;
+            for (let i = row - 1, j = col; i >= row - 2 && i >= 0; --i) {
+                if (peice2dArray[i][j].classList.contains("empty-square")) {
+                    squaresAllowedToMove.push(peice2dArray[i][j]);
+
+                } else
+                    break;
+            }
+
+        } else {
+            if (row - 1 >= 0 && peice2dArray[row - 1][col].classList.contains("empty-square")) {
+                squaresAllowedToMove.push(peice2dArray[row - 1][col]);
             }
         }
-
-    }
-    if (peiceType == "black-king" || peiceType == "white-king") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            let squaresTohighlight = [];
-            getKingMovement(peiceType, squaresTohighlight, row, col);
-            squareTOMove = squaresTohighlight;
-            squaresTohighlight.forEach(s => {
-                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
-                if (peiceType == "white-king") {
-                    if (s.classList.contains('black'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-                if (peiceType == "black-king") {
-                    if (s.classList.contains('white'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-            })
+        if (row - 1 >= 0 && col - 1 >= 0 && peice2dArray[row - 1][col - 1].classList.contains("black")) {
+            squaresAllowedToMove.push(peice2dArray[row - 1][col - 1]);
+        }
+        if (row - 1 >= 0 && col + 1 <= 7 && peice2dArray[row - 1][col + 1].classList.contains("black")) {
+            squaresAllowedToMove.push(peice2dArray[row - 1][col + 1]);
         }
 
-    }
-    if (peiceType == "white-bishop" || peiceType == "black-bishop") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            let squaresTohighlight = [];
-            giveDiagnolMovementSquares(square, squaresTohighlight, row, col);
-            squareTOMove = squaresTohighlight;
+        squaresAllowedToMove.forEach((s) => {
+            if (s.classList.contains("black")) {
+                s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
 
-            squaresTohighlight.forEach(s => {
-                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
-                if (peiceType == "white-bishop") {
-                    if (s.classList.contains('black'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-                if (peiceType == "black-bishop") {
-                    if (s.classList.contains('white'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-            })
-        }
+            } else
+                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)";
+        })
+    } else if (peiceType == "black-king" || peiceType == "white-king") {
 
-    }
-    if (peiceType == "white-rook" || peiceType == "black-rook") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            let squaresTohighlight = [];
-            givePerpendicularMovementSquares(square, squaresTohighlight, row, col);
-            squareTOMove = squaresTohighlight;
+        getKingMovement(peiceType, squaresAllowedToMove, row, col);
 
-            squaresTohighlight.forEach(s => {
-                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
-                if (peiceType == "white-rook") {
-                    if (s.classList.contains('black'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-                if (peiceType == "black-rook") {
-                    if (s.classList.contains('white'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-            })
-        }
+        squaresAllowedToMove.forEach(s => {
+            s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
+            if (peiceType == "white-king") {
+                if (s.classList.contains('black'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+            if (peiceType == "black-king") {
+                if (s.classList.contains('white'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+        })
 
-    }
-    if (peiceType == "white-knight" || peiceType == "black-knight") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            let squaresTohighlight = [];
-            giveLshapeMovementSquares(square, squaresTohighlight, row, col);
-            squareTOMove = squaresTohighlight;
+    } else if (peiceType == "white-bishop" || peiceType == "black-bishop") {
 
-            squaresTohighlight.forEach(s => {
-                s.style.backgroundColor = "rgba(51, 244, 74, 0.5)"
-                if (peiceType == "white-knight") {
-                    if (s.classList.contains('black'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-                if (peiceType == "black-knight") {
-                    if (s.classList.contains('white'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-            })
-        }
+        giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col);
 
-    }
-    if (peiceType == "white-queen" || peiceType == "black-queen") {
-        resetBorders();
-        if (controlDifferentSquareMovement !== square || controlDoubleClickMovement === 1) {
-            let squaresTohighlight = [];
 
-            giveDiagnolMovementSquares(square, squaresTohighlight, row, col);
-            givePerpendicularMovementSquares(square, squaresTohighlight, row, col);
-            squareTOMove = squaresTohighlight;
+        squaresAllowedToMove.forEach(s => {
+            s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
+            if (peiceType == "white-bishop") {
+                if (s.classList.contains('black'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+            if (peiceType == "black-bishop") {
+                if (s.classList.contains('white'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+        })
 
-            squaresTohighlight.forEach(s => {
-                s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
-                if (peiceType == "white-queen") {
-                    if (s.classList.contains('black'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
-                if (peiceType == "black-queen") {
-                    if (s.classList.contains('white'))
-                        s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
-                }
+    } else if (peiceType == "white-rook" || peiceType == "black-rook") {
 
-            })
-        }
+        givePerpendicularMovementSquares(square, squaresAllowedToMove, row, col);
+
+
+        squaresAllowedToMove.forEach(s => {
+            s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
+            if (peiceType == "white-rook") {
+                if (s.classList.contains('black'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+            if (peiceType == "black-rook") {
+                if (s.classList.contains('white'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+        })
+
+    } else if (peiceType == "white-knight" || peiceType == "black-knight") {
+
+        giveLshapeMovementSquares(square, squaresAllowedToMove, row, col);
+
+
+        squaresAllowedToMove.forEach(s => {
+            s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
+            if (peiceType == "white-knight") {
+                if (s.classList.contains('black'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+            if (peiceType == "black-knight") {
+                if (s.classList.contains('white'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+        })
+
+    } else if (peiceType == "white-queen" || peiceType == "black-queen") {
+        giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col);
+        givePerpendicularMovementSquares(square, squaresAllowedToMove, row, col);
+        squaresAllowedToMove.forEach(s => {
+            s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
+            if (peiceType == "white-queen") {
+                if (s.classList.contains('black'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+            if (peiceType == "black-queen") {
+                if (s.classList.contains('white'))
+                    s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
+            }
+
+        })
     }
 }
 
 function controlPeiceMovement(peiceType, square) {
-    resetBorders();
-    let againstType = peiceType === "black" ? "white" : "black";
+    console.log("in control");
     let flag = false;
-    squareTOMove.forEach((s) => {
+    squaresAllowedToMove.forEach((s) => {
         if (s == square)
             flag = true;
     })
@@ -449,14 +470,35 @@ function controlPeiceMovement(peiceType, square) {
                     col1 = j;
                 }
             }
+        if (row1 != row && firstMove == true) {
+            if (peice2dArray[row][col].classList.contains("secondMove")) {
+                peice2dArray[row][col].classList.remove("secondMove");
+
+            }
+            peice2dArray[row1][col1].classList.add("secondMove");
+            firstMove = false;
+        }
+
         positions[row1][col1] = positions[row][col];
         positions[row][col] = 'e';
         setPeicesClassControl();
         setPeices();
+        resetHighlightSquares();
+        clickedPeice = false;
 
     } else {
-        showPeiceMovement(peiceType, square);
-        clickedPeice = true;
+
+        if (square == peice2dArray[row][col]) {
+            resetHighlightSquares();
+            clickedPeice = false;
+        } else {
+            showPeiceMovement(peiceType, square);
+
+            clickedPeice = true;
+        }
+        if (firstMove == true) {
+            firstMove = false;
+        }
     }
 
 }
@@ -492,9 +534,10 @@ peiceArray.forEach(p => {
         else
             clicked = "empty-square"
 
+
         if (clickedPeice == true) {
             controlPeiceMovement(clicked, square);
-            clickedPeice = false;
+            console.log(peice2dArray);
         } else {
             squareClicked = square;
             showPeiceMovement(clicked, square);
