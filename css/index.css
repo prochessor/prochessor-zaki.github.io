@@ -18,8 +18,8 @@ html{
 }
 
 .board img{
-    width: 504px;
-    height: 504px;
+    width: 505px;
+    height: 505px;
 }
 .peices{
     position: absolute;
@@ -27,7 +27,7 @@ html{
     left:0;
     display: flex;
     flex-wrap: wrap;
-    max-width: 504px;
+    max-width: 505px;
 }
 
 .peice img{
