@@ -14,6 +14,8 @@ let turn = 0;
 let chessPeiceSound = new Audio("audio/chess-peice-2.mp3");
 let castlingSound = new Audio("audio/castling-sound-effect.mp3");
 let chessPeiceCapture = new Audio("audio/chess-peice-capture-2.mp3");
+let images = [...document.body.querySelector(".peices").querySelectorAll("img")];
+
 let positions = [
     ['br', 'bk', 'bb', 'bq', 'bK', 'bb', 'bk', 'br'],
     ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
@@ -489,6 +491,17 @@ function showPeiceMovement(peiceType, square) {
     }
 }
 
+// function checkValidMove(playerType) {
+//     let againstType = playerType === "white" ? "black" : "white";
+//     let squaresToCheck = [];
+//     giveDiagnolMovementSquares()
+//     givePerpendicularMovementSquares()
+//     giveLshapeMovementSquares();
+//     getKingMovement()
+// }
+
+
+
 function controlPeiceMovement(peiceType, square) {
     let flag = false;
     squaresAllowedToMove.forEach((s) => {
@@ -557,6 +570,8 @@ function controlPeiceMovement(peiceType, square) {
             }
             if (positions[row1][col1] != 'e')
                 chessPeiceCapture.play();
+            else
+                chessPeiceSound.play();
             positions[row1][col1] = positions[row][col];
             positions[row][col] = 'e';
 
@@ -575,12 +590,17 @@ function controlPeiceMovement(peiceType, square) {
             peice2dArray[row1][col1].classList.add("castlingNotAllowed")
             peice2dArray[row][col].classList.remove("castlingNotAllowed")
         }
-        console.log(peice2dArray);
         setPeicesClassControl();
         setPeices();
         resetHighlightSquares();
         clickedPeice = false;
         turn = turn == 1 ? 0 : 1;
+
+
+
+
+
+
     } else {
 
         resetHighlightSquares();
@@ -598,6 +618,8 @@ function controlPeiceMovement(peiceType, square) {
 
 }
 let firstClick = false;
+
+
 peiceArray.forEach(p => {
 
 
@@ -649,4 +671,17 @@ peiceArray.forEach(p => {
             clickedPeice = false;
         }
     })
+})
+
+document.querySelector(".flip-board").addEventListener("click", () => {
+    if (turn == 1) {
+        images.forEach(image => {
+            image.style.transform = "rotateX(180deg)"
+        })
+    } else {
+        images.forEach(image => {
+            image.style.transform = "rotateX(0deg)"
+
+        })
+    }
 })
