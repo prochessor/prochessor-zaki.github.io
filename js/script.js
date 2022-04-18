@@ -11,6 +11,9 @@ let firstMove = false;
 let row = 0,
     col = 0;
 let turn = 0;
+let chessPeiceSound = new Audio("audio/chess-peice-2.mp3");
+let castlingSound = new Audio("audio/castling-sound-effect.mp3");
+let chessPeiceCapture = new Audio("audio/chess-peice-capture-2.mp3");
 let positions = [
     ['br', 'bk', 'bb', 'bq', 'bK', 'bb', 'bk', 'br'],
     ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
@@ -49,16 +52,29 @@ function setPeicesClassControl() {
     for (let i = 0; i < 8; ++i) {
         for (let j = 0; j < 8; ++j) {
             let bool = false;
+            let bool1 = false;
+            let bool2 = false;
             if (peice2dArray[i][j].classList.contains('secondMove'))
                 bool = true;
+            if (peice2dArray[i][j].classList.contains('castlingNotAllowed'))
+                bool1 = true;
+            if (peice2dArray[i][j].classList.contains('castled'))
+                bool2 = true;
             peice2dArray[i][j].classList.value = '';
 
             peice2dArray[i][j].classList.add("peice");
             if (bool === true) {
                 peice2dArray[i][j].classList.add("secondMove");
             }
+            if (bool1 === true) {
+                peice2dArray[i][j].classList.add("castlingNotAllowed");
+            }
+            if (bool2 === true) {
+                peice2dArray[i][j].classList.add("seconcastleddMove");
+            }
         }
     }
+
     for (let i = 0; i < 8; ++i) {
         for (let j = 0; j < 8; ++j) {
             let type = "empty";
@@ -384,6 +400,26 @@ function showPeiceMovement(peiceType, square) {
             }
         })
 
+        if (square.classList.contains("castled") === false && square.classList.contains("castlingNotAllowed") === false) {
+
+
+
+
+            if (peice2dArray[row][col + 1].classList.contains("empty-square") && peice2dArray[row][col + 2].classList.contains("empty-square") && (peice2dArray[row][col + 3].classList[1].slice(-4) == "rook")) {
+
+                squaresAllowedToMove.push(peice2dArray[row][col + 2]);
+
+                peice2dArray[row][col + 2].style.backgroundColor = "rgba(255,255,0,0.5)";
+            }
+            // else if (peice2dArray[row][col - 1].classList.contains("empty-square") && peice2dArray[row][col - 2].classList.contains("empty-square") && peice2dArray[row][col - 3].classList.contains("empty-square") && (peice2dArray[row][col - 4].classList[1].slice(-4) == "rook"))
+
+            //     squaresAllowedToMove.push(peice2dArray[row][col - 3]);
+
+            // peice2dArray[row][col - 3].style.backgroundColor = "rgba(255,255,0,0.5)";
+
+        }
+
+
     } else if (peiceType == "white-bishop" || peiceType == "black-bishop") {
 
         giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col);
@@ -454,7 +490,6 @@ function showPeiceMovement(peiceType, square) {
 }
 
 function controlPeiceMovement(peiceType, square) {
-    console.log("in control");
     let flag = false;
     squaresAllowedToMove.forEach((s) => {
         if (s == square)
@@ -469,17 +504,78 @@ function controlPeiceMovement(peiceType, square) {
                     col1 = j;
                 }
             }
-        if (row1 != row && firstMove == true) {
-            if (peice2dArray[row][col].classList.contains("secondMove")) {
-                peice2dArray[row][col].classList.remove("secondMove");
 
+        if (peice2dArray[row][col].classList[1].slice(-4) == "king" && col1 - 2 == col) {
+            peice2dArray[row1][col1].classList.add("castlingNotAllowed");
+            peice2dArray[row1][col1].classList.add("castled");
+
+            positions[row1][col1] = positions[row][col];
+            positions[row][col] = 'e';
+
+
+            if (peice2dArray[row][col].classList.contains("white")) {
+                positions[row][col + 1] = 'wr';
+            } else {
+                positions[row][col + 1] = 'br';
             }
-            peice2dArray[row1][col1].classList.add("secondMove");
-            firstMove = false;
+            positions[row][col + 3] = 'e';
+            castlingSound.play();
         }
+        // } else if (peice2dArray[row][col].classList[1].slice(-4) == "king" && col - col1 == ) {
+        //     peice2dArray[row1][col1].classList.add("castlingNotAllowed");
+        //     peice2dArray[row1][col1].classList.add("castled");
 
-        positions[row1][col1] = positions[row][col];
-        positions[row][col] = 'e';
+        //     positions[row1][col1] = positions[row][col];
+        //     positions[row][col] = 'e';
+
+
+        //     if (peice2dArray[row][col].classList.contains("white")) {
+        //         positions[row][col + 1] = 'wr';
+        //     } else {
+        //         positions[row][col + 1] = 'br';
+        //     }
+        //     positions[row][col + 3] = 'e';
+        //     castlingSound.play();
+
+        // } 
+        else if (peice2dArray[row][col].classList[1].slice(-4) == "king" && col1 - 2 != col) {
+            peice2dArray[row1][col1].classList.add("castlingNotAllowed");
+            positions[row1][col1] = positions[row][col];
+            positions[row][col] = 'e';
+
+            chessPeiceSound.play();
+
+
+        } else {
+            if (row1 != row && firstMove == true) {
+                if (peice2dArray[row][col].classList.contains("secondMove")) {
+                    peice2dArray[row][col].classList.remove("secondMove");
+
+                }
+                peice2dArray[row1][col1].classList.add("secondMove");
+                firstMove = false;
+            }
+            if (positions[row1][col1] != 'e')
+                chessPeiceCapture.play();
+            positions[row1][col1] = positions[row][col];
+            positions[row][col] = 'e';
+
+            chessPeiceSound.play();
+
+        }
+        if (peice2dArray[row][col].classList.contains("secondMove")) {
+            peice2dArray[row1][col1].classList.add("secondMove")
+            peice2dArray[row][col].classList.remove("secondMove")
+        }
+        if (peice2dArray[row][col].classList.contains("castled")) {
+            peice2dArray[row1][col1].classList.add("castled")
+            peice2dArray[row][col].classList.remove("castled")
+        }
+        if (peice2dArray[row][col].classList.contains("castlingNotAllowed")) {
+            peice2dArray[row1][col1].classList.add("castlingNotAllowed")
+            peice2dArray[row][col].classList.remove("castlingNotAllowed")
+        }
+        console.log(peice2dArray);
         setPeicesClassControl();
         setPeices();
         resetHighlightSquares();
@@ -501,8 +597,10 @@ function controlPeiceMovement(peiceType, square) {
     }
 
 }
-
+let firstClick = false;
 peiceArray.forEach(p => {
+
+
     p.addEventListener("click", (e) => {
 
         let square = e.target.closest("div");
@@ -536,7 +634,6 @@ peiceArray.forEach(p => {
 
         if (clickedPeice == true) {
             controlPeiceMovement(clicked, square);
-            console.log(peice2dArray);
         } else {
             if (turn == 0 && clicked.slice(0, 5) == "white") {
                 showPeiceMovement(clicked, square);
