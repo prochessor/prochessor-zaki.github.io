@@ -685,3 +685,21 @@ document.querySelector(".flip-board").addEventListener("click", () => {
         })
     }
 })
+let data = [{}];
+
+function dataManipulate() {
+    data.push({
+        number: document.querySelector(".input").value
+    });
+    let ele = document.createElement('p');
+    data.forEach(d => {
+        ele.textContent += d.number;
+    })
+    document.querySelector(".game").insertAdjacentElement("afterbegin", ele);
+    localStorage.setItem("data", JSON.stringify(data));
+}
+document.querySelector(".input-btn").addEventListener("click", () => {
+
+    dataManipulate();
+
+})
