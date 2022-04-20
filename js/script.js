@@ -685,15 +685,18 @@ document.querySelector(".flip-board").addEventListener("click", () => {
         })
     }
 })
-let data = [{}];
+let data = [];
 
 function dataManipulate() {
-    data.push({
-        number: document.querySelector(".input").value
-    });
+    if (localStorage.getItem("data"))
+        data = JSON.parse(localStorage.getItem("data"));
+    console.log(data);
+    data.push(
+        document.querySelector(".input").value
+    );
     let ele = document.createElement('p');
     data.forEach(d => {
-        ele.textContent += d.number;
+        ele.textContent += d;
     })
     document.querySelector(".game").insertAdjacentElement("afterbegin", ele);
     localStorage.setItem("data", JSON.stringify(data));
