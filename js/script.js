@@ -686,7 +686,6 @@ document.querySelector(".flip-board").addEventListener("click", () => {
     }
 })
 let data = [];
-
 function dataManipulate() {
     if (localStorage.getItem("data"))
         data = JSON.parse(localStorage.getItem("data"));
