@@ -47,8 +47,8 @@ html{
 @media only screen and (max-width:500px)
 {
     .board{
-        margin-left: 10px;
-        margin-top: 100px;
+        margin-left: 15px;
+        margin-top: 300px;
 
     }
     .board img{
@@ -68,9 +68,18 @@ html{
     }
 
 }
-.flip-board{
+.flip-board,
+.flip-peices,
+.undo{
     position: absolute;
     padding:5px;
     top:40px;
-    left:30px
+    left:30px;
+    cursor:pointer;
+}
+.undo{
+    top:120px;
+}
+.flip-peices{
+    top:80px;
 }
