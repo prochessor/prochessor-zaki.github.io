@@ -382,6 +382,7 @@ function showPeiceMovement(peiceType, square) {
             }
 
         }
+        checkPeiceMovementValidation();
 
         squaresAllowedToMove.forEach((s) => {
             if (s.classList.contains("white")) {
@@ -438,6 +439,8 @@ function showPeiceMovement(peiceType, square) {
             }
 
         }
+        checkPeiceMovementValidation();
+
         squaresAllowedToMove.forEach((s) => {
             if (s.classList.contains("black")) {
                 s.style.backgroundColor = "rgba(244, 51, 51, 0.611)"
@@ -493,6 +496,8 @@ function showPeiceMovement(peiceType, square) {
                 }
             }
         }
+        checkPeiceMovementValidation();
+
         squaresAllowedToMove.forEach(s => {
             s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
             if (peiceType == "white-king") {
@@ -509,6 +514,7 @@ function showPeiceMovement(peiceType, square) {
 
         giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col);
 
+        checkPeiceMovementValidation();
 
         squaresAllowedToMove.forEach(s => {
             s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
@@ -526,6 +532,7 @@ function showPeiceMovement(peiceType, square) {
 
         givePerpendicularMovementSquares(square, squaresAllowedToMove, row, col);
 
+        checkPeiceMovementValidation();
 
         squaresAllowedToMove.forEach(s => {
             s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
@@ -543,6 +550,7 @@ function showPeiceMovement(peiceType, square) {
 
         giveLshapeMovementSquares(square, squaresAllowedToMove, row, col);
 
+        checkPeiceMovementValidation();
 
         squaresAllowedToMove.forEach(s => {
             s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
@@ -559,6 +567,7 @@ function showPeiceMovement(peiceType, square) {
     } else if (peiceType == "white-queen" || peiceType == "black-queen") {
         giveDiagnolMovementSquares(square, squaresAllowedToMove, row, col);
         givePerpendicularMovementSquares(square, squaresAllowedToMove, row, col);
+        checkPeiceMovementValidation();
         squaresAllowedToMove.forEach(s => {
             s.style.backgroundColor = "rgba(51, 244, 74, 0.4)"
             if (peiceType == "white-queen") {
@@ -578,6 +587,151 @@ let previouspositions = [
     []
 ];
 
+function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory, type) {
+    for (let i = rowK - 1, j = colK + 1; i >= 0 && j <= 7; --i, ++j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK - 1, j = colK - 1; i >= 0 && j >= 0; --i, --j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK + 1, j = colK + 1; i <= 7 && j <= 7; ++i, ++j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK + 1, j = colK - 1; i <= 7 && j >= 0; ++i, --j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+}
+
+function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory, type) {
+
+    for (let i = rowK - 1, j = colK; i >= 0; --i) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK, j = colK + 1; j <= 7; ++j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK + 1, j = colK; i <= 7; ++i) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+    for (let i = rowK, j = colK - 1; j >= 0; --j) {
+        if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
+            redSquares.push(peice2dArray[i][j]);
+        }
+        if (peice2dArray[i][j].classList.contains(type)) {
+            break;
+        }
+    }
+}
+
+
+
+function checkKingPositionAndOperateAccordingly(type, index) {
+    let rowKing, colKing;
+    let king = type === "black" ? 'bK' : 'wK';
+    for (let i = 0; i < 8; ++i) {
+        for (let j = 0; j < 8; ++j) {
+            if (positions[i][j] == king || positions[i][j].slice(1) == king) {
+                rowKing = i;
+                colKing = j;
+            }
+        }
+    }
+    let redSquares = [];
+    let bishop = type !== "black" ? 'black-bishop' : 'white-bishop';
+    let rook = type !== "black" ? 'black-rook' : 'white-rook';
+    let queen = type !== "black" ? 'black-queen' : 'white-queen';
+    let knight = type !== "black" ? 'black-knight' : 'white-knight';
+
+
+    checkKingToBishopMovement(rowKing, colKing, redSquares, bishop, type);
+
+    checkKingToRookMovement(rowKing, colKing, redSquares, rook, type);
+    checkKingToBishopMovement(rowKing, colKing, redSquares, queen, type);
+    checkKingToRookMovement(rowKing, colKing, redSquares, queen, type);
+    if (redSquares.length > 0) {
+
+        squaresAllowedToMove.splice(index, 1);
+        return true;
+    } else
+        return false;
+
+}
+
+function checkPeiceMovementValidation(squaresToCheck = squaresAllowedToMove) {
+    let type = peice2dArray[row][col].classList.contains("black") ? "black" : "white";
+    let previousPositionToCheck = [
+        []
+    ];
+    positions.forEach((o, i) => {
+        previousPositionToCheck[i] = [...o]
+    });
+    for (let i = 0; i < squaresAllowedToMove.length; ++i) {
+
+        previousPositionToCheck.forEach((o, i) => {
+            positions[i] = [...o]
+        });
+        let row1, col1;
+        for (let k = 0; k < 8; ++k) {
+            for (let j = 0; j < 8; ++j) {
+                if (peice2dArray[k][j] == squaresAllowedToMove[i]) {
+                    row1 = k;
+                    col1 = j;
+                }
+            }
+        }
+
+        positions[row1][col1] = positions[row][col];
+        positions[row][col] = 'e';
+        setPeicesClassControl();
+        if (checkKingPositionAndOperateAccordingly(type, i) === true)
+            i--;
+    }
+    previousPositionToCheck.forEach((o, i) => {
+        positions[i] = [...o]
+    });
+    setPeicesClassControl();
+    if (squaresAllowedToMove.length == 0) {
+
+    }
+}
 
 function controlPeiceMovement(peiceType, square) {
     let flag = false;
