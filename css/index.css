@@ -70,6 +70,8 @@ html{
 }
 .flip-board,
 .flip-peices,
+.newGame,
+.loadGame,
 .undo{
     position: absolute;
     padding:5px;
@@ -121,4 +123,10 @@ html{
 }
 .none{
     display:none;
+}
+.newGame{
+    top:10px;
+}
+.loadGame{
+    top:150px;
 }
