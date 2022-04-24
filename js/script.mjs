@@ -978,16 +978,16 @@ function writeUserData() {
 }
 document.querySelector(".loadGame").addEventListener("click", () => {
 
+
+
     const starCountRef = ref(database, 'users/' + userId);
     onValue(starCountRef, (snapshot) => {
-        const data = snapshot.val();
-        positions = data.positionOfGame;
+        setTimeout(() => {
+            positions = snapshot.val().positionOfGame;
+            setPeicesClassControl();
+            setPeices();
+            console.log(positions);
+        }, 1);
+        positions = snapshot.val().positionOfGame;
     });
-
-    setPeicesClassControl();
-    setPeices();
-
-
-
-
 })
