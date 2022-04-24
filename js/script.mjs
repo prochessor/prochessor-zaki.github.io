@@ -919,10 +919,10 @@ document.querySelector(".newGame").addEventListener("click", () => {
         ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
         ['wr', 'wk', 'wb', 'wq', 'cwK', 'wb', 'wk', 'wr'],
     ]
+    turn = 0;
     writeUserData();
     setPeicesClassControl();
     setPeices();
-    turn = 0;
 
 
 
@@ -966,7 +966,8 @@ const userId = "zaki";
 
 function writeUserData() {
     update(ref(database, 'users/' + userId), {
-            positionOfGame: positions
+            positionOfGame: positions,
+            playerTurn: turn,
         }).then(() => {
             // Data saved successfully!
             console.log("dataSubmitted");
@@ -984,10 +985,17 @@ document.querySelector(".loadGame").addEventListener("click", () => {
     onValue(starCountRef, (snapshot) => {
         setTimeout(() => {
             positions = snapshot.val().positionOfGame;
+            turn = snapshot.val().playerTurn;
             setPeicesClassControl();
             setPeices();
-            console.log(positions);
         }, 1);
         positions = snapshot.val().positionOfGame;
     });
 })
+
+
+
+
+
+
+
