@@ -587,12 +587,12 @@ let previouspositions = [
     []
 ];
 
-function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory, type) {
+function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory) {
     for (let i = rowK - 1, j = colK + 1; i >= 0 && j <= 7; --i, ++j) {
         if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
             redSquares.push(peice2dArray[i][j]);
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -601,7 +601,7 @@ function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory, type)
             redSquares.push(peice2dArray[i][j]);
 
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -610,7 +610,7 @@ function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory, type)
             redSquares.push(peice2dArray[i][j]);
 
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -619,19 +619,19 @@ function checkKingToBishopMovement(rowK, colK, redSquares, peiceMandatory, type)
             redSquares.push(peice2dArray[i][j]);
 
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
 }
 
-function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory, type) {
+function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory) {
 
     for (let i = rowK - 1, j = colK; i >= 0; --i) {
         if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
             redSquares.push(peice2dArray[i][j]);
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -639,7 +639,7 @@ function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory, type) {
         if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
             redSquares.push(peice2dArray[i][j]);
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -647,7 +647,7 @@ function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory, type) {
         if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
             redSquares.push(peice2dArray[i][j]);
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -655,7 +655,7 @@ function checkKingToRookMovement(rowK, colK, redSquares, peiceMandatory, type) {
         if (peice2dArray[i][j].classList.contains(peiceMandatory)) {
             redSquares.push(peice2dArray[i][j]);
         }
-        if (peice2dArray[i][j].classList.contains(type)) {
+        if (peice2dArray[i][j].classList.contains("empty-square") === false) {
             break;
         }
     }
@@ -681,11 +681,11 @@ function checkKingPositionAndOperateAccordingly(type, index) {
     let knight = type !== "black" ? 'black-knight' : 'white-knight';
 
 
-    checkKingToBishopMovement(rowKing, colKing, redSquares, bishop, type);
+    checkKingToBishopMovement(rowKing, colKing, redSquares, bishop);
 
-    checkKingToRookMovement(rowKing, colKing, redSquares, rook, type);
-    checkKingToBishopMovement(rowKing, colKing, redSquares, queen, type);
-    checkKingToRookMovement(rowKing, colKing, redSquares, queen, type);
+    checkKingToRookMovement(rowKing, colKing, redSquares, rook);
+    checkKingToBishopMovement(rowKing, colKing, redSquares, queen);
+    checkKingToRookMovement(rowKing, colKing, redSquares, queen);
     if (redSquares.length > 0) {
 
         squaresAllowedToMove.splice(index, 1);
