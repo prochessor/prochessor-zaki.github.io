@@ -979,6 +979,9 @@ function writeUserData() {
             // The write failed...
             console.log("data failed");
         });
+    if (boardFlipped === true) {
+        controlBoardFlipping();
+    }
 }
 document.querySelector(".loadGame").addEventListener("click", () => {
 
