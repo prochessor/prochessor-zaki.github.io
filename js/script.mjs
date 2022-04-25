@@ -885,7 +885,7 @@ document.querySelector(".flip-peices").addEventListener("click", () => {
     peiceFlipped = peiceFlipped ? false : true;
 
 })
-document.querySelector(".flip-board").addEventListener("click", () => {
+let controlBoardFlipping = () => {
     boardFlipped = boardFlipped ? false : true;
     positions.forEach(p => {
         p.reverse();
@@ -894,7 +894,8 @@ document.querySelector(".flip-board").addEventListener("click", () => {
     setPeicesClassControl();
     setPeices();
     resetHighlightSquares();
-})
+}
+document.querySelector(".flip-board").addEventListener("click", controlBoardFlipping)
 document.querySelector(".undo").addEventListener("click", () => {
     if (preventDoubleUndoClick == 1) {
         previouspositions.forEach((o, i) => {
@@ -961,10 +962,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const analytics = getAnalytics(app);
 const userId = "zaki";
 
 function writeUserData() {
+    if (boardFlipped === true) {
+        controlBoardFlipping();
+    }
     update(ref(database, 'users/' + userId), {
             positionOfGame: positions,
             playerTurn: turn,
@@ -986,16 +989,13 @@ document.querySelector(".loadGame").addEventListener("click", () => {
         setTimeout(() => {
             positions = snapshot.val().positionOfGame;
             turn = snapshot.val().playerTurn;
+            if (boardFlipped === true) {
+                controlBoardFlipping();
+            }
             setPeicesClassControl();
             setPeices();
         }, 1);
         positions = snapshot.val().positionOfGame;
     });
+
 })
-
-
-
-
-
-
-
