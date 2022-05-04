@@ -11,6 +11,10 @@ html{
     background-color: #004157;
 
 }
+.body{
+    max-width: 100%;
+    overflow-x: hidden;
+}
 .board{
 
     margin-left:30vw;
@@ -257,7 +261,6 @@ html{
     }
     .optionsModal
     {
-        left:13%;
+        left:4%;
     }
-
 }
