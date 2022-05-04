@@ -51,7 +51,7 @@ document.querySelector(".rightBoard ").addEventListener("click", () => {
 
 
 document.querySelector(".save").addEventListener("click", () => {
-    document.querySelector(".board").children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+    document.querySelector(".board").children[0].src = `images/${themeImages[currentThemeIndex]}`;
     document.querySelector(".overlay").classList.add("hidden");
     document.querySelector(".optionsModal").classList.add("hidden");
 })
