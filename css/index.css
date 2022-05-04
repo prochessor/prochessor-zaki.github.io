@@ -255,5 +255,9 @@ html{
         margin-left:40px;
         margin-right: 40px;
     }
+    .optionsModal
+    {
+        left:13%;
+    }
 
 }
