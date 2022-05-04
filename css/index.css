@@ -148,7 +148,7 @@ html{
 @media only screen and (max-width:500px)
 {
     .board{
-        margin-left: 50px;
+        margin-left: 20px;
         margin-top: 300px;
 
     }
