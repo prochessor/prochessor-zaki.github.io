@@ -25,6 +25,57 @@ let promotedPeice;
 let rowPromoted, colPromoted;
 let isNotStaleMate = false;
 let isElPasant = false;
+let previewBoardImage = document.querySelector(".boardImage");
+let themeImages = ["board-1.jpg", "board-2.png", "board-3.jpg"];
+
+let currentThemeIndex = 2;
+document.querySelector(".leftBoard ").addEventListener("click", () => {
+    if (currentThemeIndex != 0) {
+        currentThemeIndex--;
+    } else {
+        currentThemeIndex = themeImages.length - 1;
+    }
+    previewBoardImage.children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+
+})
+
+document.querySelector(".rightBoard ").addEventListener("click", () => {
+    if (currentThemeIndex != themeImages.length - 1) {
+        currentThemeIndex++;
+    } else {
+        currentThemeIndex = 0;
+    }
+    previewBoardImage.children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+})
+
+
+
+document.querySelector(".save").addEventListener("click", () => {
+    document.querySelector(".board").children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+    document.querySelector(".overlay").classList.add("hidden");
+    document.querySelector(".optionsModal").classList.add("hidden");
+})
+
+document.querySelector(".options").addEventListener("click", (e) => {
+    document.querySelector(".overlay").classList.remove("hidden");
+
+    document.querySelector(".optionsModal").classList.remove("hidden");
+})
+
+let optionsCloseButtons = [...document.querySelectorAll(".close")];
+
+
+optionsCloseButtons.forEach(clsbtn => {
+
+    clsbtn.addEventListener("click", (e) => {
+        document.querySelector(".overlay").classList.add("hidden");
+
+        document.querySelector(".optionsModal").classList.add("hidden");
+
+    })
+
+
+})
 document.querySelector(".promotionModal").addEventListener("click", (e) => {
     let clicked = e.target;
     clicked = clicked.closest("div");
