@@ -35,7 +35,7 @@ document.querySelector(".leftBoard ").addEventListener("click", () => {
     } else {
         currentThemeIndex = themeImages.length - 1;
     }
-    previewBoardImage.children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+    previewBoardImage.children[0].src = `images/${themeImages[currentThemeIndex]}`;
 
 })
 
@@ -45,7 +45,7 @@ document.querySelector(".rightBoard ").addEventListener("click", () => {
     } else {
         currentThemeIndex = 0;
     }
-    previewBoardImage.children[0].src = `../images/${themeImages[currentThemeIndex]}`;
+    previewBoardImage.children[0].src = `images/${themeImages[currentThemeIndex]}`;
 })
 
 
