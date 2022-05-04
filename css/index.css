@@ -7,7 +7,7 @@
     padding:0;
 }
 html{
-    background-color: rgb(22, 56, 59);
+    background-color: #004157;
 
 }
 .board{
@@ -44,47 +44,6 @@ html{
     cursor: pointer;
     box-shadow: 0 0 6px black ;
 }
-@media only screen and (max-width:500px)
-{
-    .board{
-        margin-left: 15px;
-        margin-top: 300px;
-
-    }
-    .board img{
-        width: 350px;
-        height: 350px;
-    }
-    .peice img{
-        width: 39.7px;
-        height: 39.7px;
-    }
-    .peice{
-        width: 39.7px;
-        height: 39.7px;
-    }
-    .peices{
-         max-width: 350px;
-    }
-
-}
-.flip-board,
-.flip-peices,
-.newGame,
-.loadGame,
-.undo{
-    position: absolute;
-    padding:5px;
-    top:40px;
-    left:30px;
-    cursor:pointer;
-}
-.undo{
-    top:120px;
-}
-.flip-peices{
-    top:80px;
-}
   
 .checkMateModal{
     text-align: center;
@@ -99,6 +58,24 @@ html{
     border-radius: 3px;
     font-size: 25px;
 }
+
+.flip-board,
+.flip-peices,
+.loadGame,
+.undo{
+    position: absolute;
+    padding:5px;
+    top:40px;
+    left:30px;
+    cursor:pointer;
+}
+.undo{
+    top:120px;
+}
+.flip-peices{
+    top:80px;
+}
+
 .checkMateText{
     margin-top: 25px;
 }
@@ -129,4 +106,93 @@ html{
 }
 .loadGame{
     top:150px;
+}
+.hidden{
+    display: none;
+}
+.promotionModal{
+    background: rgb(218, 218, 218);
+    position: absolute;
+    border-radius: 5px;
+    top:50px;
+    left:500px;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.promotionModal img{
+    width: 60px;
+    height:60px;
+    border:1px solid rgb(172, 172, 172);
+    border-radius: 3px;
+    margin:5px;
+}
+.modalChilds{
+    display: flex;
+    border: 3px solid grey;
+    border-radius: 5px;
+    margin-top:15px;
+    margin-bottom:15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
+.promotionModal p{
+    margin-top:25px;
+    font-size: 20px;
+    margin-left:40px;
+    margin-right: 40px;
+}
+
+@media only screen and (max-width:500px)
+{
+    .board{
+        margin-left: 50px;
+        margin-top: 300px;
+
+    }
+    .board img{
+        width: 350px;
+        height: 350px;
+    }
+    .peice img{
+        width: 39.7px;
+        height: 39.7px;
+    }
+    .peice{
+        width: 39.7px;
+        height: 39.7px;
+    }
+    .peices{
+         max-width: 350px;
+    }
+    .checkMateModal{
+        top: 22%;
+        left:20%;
+        width: 211px;
+        height: 300px;
+        font-size: 20px;
+    }
+    .promotionModal{
+    top:22%;
+    left:20%;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.promotionModal img{
+    width: 40px;
+    height:40px;
+    border:1px solid rgb(172, 172, 172);
+    border-radius: 3px;
+    margin:5px;
+}
+.promotionModal p{
+    margin-top:16px;
+    font-size: 17px;
+    margin-left:40px;
+    margin-right: 40px;
+}
+
 }
