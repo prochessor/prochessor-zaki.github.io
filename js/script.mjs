@@ -26,7 +26,7 @@ let rowPromoted, colPromoted;
 let isNotStaleMate = false;
 let isElPasant = false;
 let previewBoardImage = document.querySelector(".boardImage");
-let themeImages = ["board-1.jpg", "board-2.png", "board-3.jpg"];
+let themeImages = ["board-1.jpg", "board-2.png", "board-3.jpg", "board-4.jpg", "board-5.png", "board-6.png"];
 
 let currentThemeIndex = 2;
 document.querySelector(".leftBoard ").addEventListener("click", () => {
